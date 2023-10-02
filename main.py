@@ -23,7 +23,7 @@ def config_parser():
     configuration_parser.add_argument("-trp", "--train_pathway", type=str, help="Train Pathway CSV")
     configuration_parser.add_argument("-tep", "--test_pathway", type=str, help="Test Pathway CSV")
     configuration_parser.add_argument("-ilr", "--init_learning_rate", type=float, help="Initial Learning Rate for the optimizer")
-
+    configuration_parser.parse_args()
     return configuration_parser
 
 if __name__ == '__main__':
