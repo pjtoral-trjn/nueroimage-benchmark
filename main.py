@@ -23,15 +23,15 @@ def config_parser():
     configuration_parser.add_argument("-trp", "--train_pathway", type=str, help="Train Pathway CSV")
     configuration_parser.add_argument("-tep", "--test_pathway", type=str, help="Test Pathway CSV")
     configuration_parser.add_argument("-ilr", "--init_learning_rate", type=float, help="Initial Learning Rate for the optimizer")
-    configuration_parser.parse_args()
     return configuration_parser
 
 if __name__ == '__main__':
     parser = config_parser()
+    args = parser.parse_args()
     # configuration = sys.argv[1]
     print("----- Experiment Begin -----")
     print("Running the following configuration:")
-    print(parser)
+    print(args)
     # experiment_model = Model(experiment_config[configuration])
     # experiment_model.run_pipeline()
     print("----- Experiment Complete -----")
