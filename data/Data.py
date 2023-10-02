@@ -8,17 +8,19 @@ from scipy.ndimage import zoom
 
 
 class Data:
-    def __init__(self, experiment_config):
-        self.train_pathway = experiment_config["train_pathway"]
-        self.test_pathway = experiment_config["test_pathway"]
+    def __init__(self, args):
+        self.args = args
+        self.train_pathway = self.args.train_pathway
+        self.test_pathway = self.args.test_pathway
         # self.pathway = "/lfs1/pjtoral/cognitive-decline/scripts/data/revised/standardized/mci_included"
         self.dof = "9DOF"
-        self.target_column = experiment_config["target_column"]
-        self.batch_size = experiment_config["batch_size"]
-        self.transformation = experiment_config["transformation"]
-        self.sample_weight = experiment_config["sample_weight"]
-        if self.sample_weight == "dense_weight":
-            self.dense_weight_alpha = experiment_config["alpha"]
+        self.target_column = self.args.target_column
+        self.batch_size = self.args.batch_size
+        self.transformation = self.args.transformation
+        # self.sample_weight = self.args.sample_weight
+        # if self.sample_weight == "dense_weight":
+        #     self.dense_weight_alpha = experiment_config["alpha"]
+
         self.train_df = pd.DataFrame()
         self.validation_df = pd.DataFrame()
         self.test_df = pd.DataFrame()
@@ -41,7 +43,6 @@ class Data:
         #
         # df_test = pd.concat([df_test_ADNI1, df_test_ADNI2, df_test_ADNI3], ignore_index=True).reset_index(drop=True)
         #
-
         df_train = pd.read_csv(self.train_pathway)
         df_test = pd.read_csv(self.test_pathway)
 
