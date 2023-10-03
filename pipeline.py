@@ -42,9 +42,9 @@ class Pipeline:
         self.validation_batch = self.data.validation_batch
         self.test_batch = self.data.test_batch
         print("----- Data -----")
-        print("Train: ", str(len(self.train_batch)))
-        print("Validation: ", str(len(self.validation_batch)))
-        print("Test: ", str(len(self.test_batch)))
+        print("Train:", str(len(self.train_batch)))
+        print("Validation:", str(len(self.validation_batch)))
+        print("Test:", str(len(self.test_batch)))
 
     def configure_model(self):
         selection = self.args.model_architecture
@@ -54,6 +54,8 @@ class Pipeline:
             self.set_loss_fn()
             self.set_callbacks()
             self.set_metrics()
+
+        self.model.summary()
 
     def set_optimizer(self):
         self.optimizer = tfa.optimizers.AdamW(learning_rate=self.args.init_learning_rate,
