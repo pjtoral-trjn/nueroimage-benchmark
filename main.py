@@ -1,7 +1,6 @@
 import sys
 import argparse
-# from config.config import experiment_config
-# from model.Model import Model
+from pipeline import Pipeline
 
 def config_parser():
     configuration_parser = argparse.ArgumentParser()
@@ -35,8 +34,8 @@ if __name__ == '__main__':
     print("----- Experiment Begin -----")
     print("Running the following configuration:")
     print(args)
-    # experiment_model = Model(experiment_config[configuration])
-    # experiment_model.run_pipeline()
+    pipeline = Pipeline(args)
+    pipeline.configure_gpu()
     print("----- Experiment Complete -----")
 
 
