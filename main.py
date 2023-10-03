@@ -16,7 +16,7 @@ def config_parser():
     # required configuration
     configuration_parser.add_argument("-g","--gpu", type=int, help="GPU ID Selection")
     configuration_parser.add_argument("-bs", "--batch_size", type=int, help="Batch Size")
-    configuration_parser.add_argument("-es", "--early_stopping", type=int, help="Early Stopping")
+    configuration_parser.add_argument("-es", "--early_stop", type=int, help="Early Stopping")
     configuration_parser.add_argument("-do", "--drop_out", type=int, help="Model Dropout")
     configuration_parser.add_argument("-ma", "--model_architecture", type=str, help="Model Architecture Selection")
     configuration_parser.add_argument("-l", "--loss", type=str, help="Model Loss")
