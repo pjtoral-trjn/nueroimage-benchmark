@@ -16,7 +16,7 @@ class Data:
         self.dof = "9DOF"
         self.target_column = self.args.target_column
         self.batch_size = self.args.batch_size
-        self.transformation = self.args.transformation
+        # self.transformation = self.args.transformation
         # self.sample_weight = self.args.sample_weight
         # if self.sample_weight == "dense_weight":
         #     self.dense_weight_alpha = experiment_config["alpha"]
