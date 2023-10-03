@@ -41,6 +41,10 @@ class Pipeline:
         self.train_batch = self.data.train_batch
         self.validation_batch = self.data.validation_batch
         self.test_batch = self.data.test_batch
+        print("----- Data -----")
+        print(self.train_batch)
+        print(self.validation_batch)
+        print(self.test_batch)
 
     def configure_model(self):
         selection = self.args.model_architecture
