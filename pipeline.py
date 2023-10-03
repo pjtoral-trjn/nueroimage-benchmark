@@ -48,7 +48,7 @@ class Pipeline:
 
     def configure_model(self):
         selection = self.args.model_architecture
-        self.model = TCNN(self.args)
+        self.model = TCNN(self.args).get_model()
         if self.model is not None:
             self.set_optimizer()
             self.set_loss_fn()
