@@ -1,7 +1,7 @@
 import tensorflow as tf
 import tensorflow_addons as tfa
 class TCNN(tf.keras.Model):
-    def convolution_block(inputs, num_filter, name):
+    def convolution_block(self, inputs, num_filter, name):
         inputs = tf.keras.layers.Conv3D(num_filter, 3, strides=1, padding="same")(inputs)
         inputs = tfa.layers.InstanceNormalization(center=False, scale=False)(inputs, training=True)
         inputs = tf.keras.layers.MaxPooling3D(2, strides=2, padding="valid")(inputs)
