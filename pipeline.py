@@ -99,7 +99,7 @@ class Pipeline:
     def compile(self):
         self.model.compile(
             optimizer=self.optimizer,
-            loss=self.loss,
+            loss=self.loss_fn,
             metrics=self.metrics)
 
     def fit(self):
