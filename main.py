@@ -36,6 +36,7 @@ if __name__ == '__main__':
     print(args)
     pipeline = Pipeline(args)
     pipeline.configure_gpu()
+    pipeline.configure_data()
     print("----- Experiment Complete -----")
 
 

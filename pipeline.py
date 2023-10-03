@@ -33,7 +33,7 @@ class Pipeline:
         os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
         os.environ["CUDA_VISIBLE_DEVICES"] = str(self.args.gpu)
         physical_devices = tf.config.list_physical_devices('GPU')
-        print("Num GPUs Available: ", len(physical_devices), str(self.args.gpu))
+        print("Num GPUs Available: ", len(physical_devices), ", GPU ID: ", str(self.args.gpu))
         tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
     def configure_data(self):
