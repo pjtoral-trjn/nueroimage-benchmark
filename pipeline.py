@@ -25,7 +25,8 @@ class Pipeline:
         self.args = args
         self.creation_time_for_csv_output = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
         self.output_filename = self.args.experiment_name + "__" + self.creation_time_for_csv_output
-        self.best_weights_checkpoint_filepath = '/tmp/' + self.args.target_column + "/" + self.creation_time + '/checkpoint'
+        self.best_weights_checkpoint_filepath = '/tmp/' + self.args.target_column + "/" \
+                                                + self.creation_time_for_csv_output + '/checkpoint'
         self.task = "classification" if self.args.loss is "bce" else "regression"
 
     def configure_gpu(self):
