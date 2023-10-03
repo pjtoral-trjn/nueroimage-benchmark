@@ -100,7 +100,8 @@ class Pipeline:
         self.model.compile(
             optimizer=self.optimizer,
             loss=self.loss_fn,
-            metrics=self.metrics)
+            metrics=self.metrics
+        )
 
     def fit(self):
         # custom training loop function
@@ -112,10 +113,8 @@ class Pipeline:
             callbacks=self.callbacks,
         )
 
-
     def run_pipeline(self):
         self.compile()
-        self.model.summary()
         print("-- Fit Begin --")
         self.history = self.fit()
         print("-- Fit Complete --")
@@ -135,4 +134,3 @@ class Pipeline:
         history.to_csv("./output/" + self.output_filename + "/" + self.output_filename + "_history.csv")
         # evaluations.to_csv("./output/" + self.output_filename + "/" + self.output_filename + "_evaluations.csv")
         predictions.to_csv("./output/" + self.output_filename + "/" + self.output_filename + "_predictions.csv")
-
