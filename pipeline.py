@@ -115,6 +115,7 @@ class Pipeline:
 
     def run_pipeline(self):
         self.compile()
+        self.model.summary()
         print("-- Fit Begin --")
         self.history = self.fit()
         print("-- Fit Complete --")
