@@ -8,8 +8,10 @@ from tensorflow.keras.utils import get_custom_objects
 from model.TCNN import TCNN
 from data.Data import Data
 
+
 class Pipeline:
     def __init__(self, args):
+        self.history = None
         self.metrics = None
         self.callbacks = None
         self.optimizer = None
@@ -30,7 +32,7 @@ class Pipeline:
         os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
         os.environ["CUDA_VISIBLE_DEVICES"] = self.args.gpu
         physical_devices = tf.config.list_physical_devices('GPU')
-        print("Num GPUs Available: ", len(physical_devices),str(self.args.gpu))
+        print("Num GPUs Available: ", len(physical_devices), str(self.args.gpu))
         tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
     def configure_data(self):
@@ -47,8 +49,10 @@ class Pipeline:
             self.set_loss_fn()
             self.set_callbacks()
             self.set_metrics()
+
     def set_optimizer(self):
-        self.optimizer = tfa.optimizers.AdamW(learning_rate=self.args.init_learning_rate,weight_decay=self.args.weight_decay)
+        self.optimizer = tfa.optimizers.AdamW(learning_rate=self.args.init_learning_rate,
+                                              weight_decay=self.args.weight_decay)
 
     def set_loss_fn(self):
         if self.args.loss == "mse":
@@ -87,6 +91,43 @@ class Pipeline:
         if self.task == "regression":
             self.metrics = ["mse", "mae"]
 
+    def compile(self):
+        self.model.compile(
+            optimizer=self.optimizer,
+            loss=self.loss,
+            metrics=self.metrics)
+
+    def fit(self):
+        # custom training loop function
+        return self.model.fit(
+            self.train_batch,
+            validation_data=self.validation_batch,
+            epochs=self.args.epochs,
+            verbose=1,
+            callbacks=self.callbacks,
+        )
+
+
     def run_pipeline(self):
-        pass
+        self.compile()
+        self.model.summary()
+        print("-- Fit Begin --")
+        self.history = self.fit()
+        print("-- Fit Complete --")
+        # loading the best weights from training
+        self.model.load_weights(self.best_weights_checkpoint_filepath)
+
+        # evaluation
+        evaluation = self.model.evaluate(self.test_batch)
+        model_predictions = [p[0] for p in self.model.predict(self.test_batch)]
+        true_labels = self.data.train_df[self.target_column].to_numpy()
+
+        save_pathway = "./saves/" + self.args.experiment_name
+        print(save_pathway)
+        self.model.save(save_pathway)
+        history = pd.DataFrame(self.history.history)
+        predictions = pd.DataFrame(data={"predictions": model_predictions, "true_labels": true_labels})
+        history.to_csv("./output/" + self.output_filename + "/" + self.output_filename + "_history.csv")
+        # evaluations.to_csv("./output/" + self.output_filename + "/" + self.output_filename + "_evaluations.csv")
+        predictions.to_csv("./output/" + self.output_filename + "/" + self.output_filename + "_predictions.csv")
 

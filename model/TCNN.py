@@ -38,7 +38,7 @@ class TCNN(tf.keras.Model):
                                         )(self.flatten_lyr)
 
         # Define the model
-        model = tf.keras.Model(images, self.output_lyr, name="3DCNN")
+        # model = tf.keras.Model(images, self.output_lyr, name="3DCNN")
         # self.model = model
     def call(self, inputs):
         x = self.cb_1(inputs)
