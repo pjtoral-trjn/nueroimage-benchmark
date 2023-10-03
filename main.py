@@ -17,6 +17,7 @@ def config_parser():
     configuration_parser.add_argument("-g","--gpu", type=int, help="GPU ID Selection")
     configuration_parser.add_argument("-bs", "--batch_size", type=int, help="Batch Size")
     configuration_parser.add_argument("-es", "--early_stopping", type=int, help="Early Stopping")
+    configuration_parser.add_argument("-do", "--drop_out", type=int, help="Model Dropout")
     configuration_parser.add_argument("-ma", "--model_architecture", type=str, help="Model Architecture Selection")
     configuration_parser.add_argument("-l", "--loss", type=str, help="Model Loss")
     configuration_parser.add_argument("-en", "--experiment_name", type=str, help="Experiment Name, for storage")
@@ -24,6 +25,7 @@ def config_parser():
     configuration_parser.add_argument("-tep", "--test_pathway", type=str, help="Test Pathway CSV")
     configuration_parser.add_argument("-ilr", "--init_learning_rate", type=float, help="Initial Learning Rate for the optimizer")
     configuration_parser.add_argument("-wd", "--weight_decay", type=float, help="Weight Decay for ADAMW optimizer")
+
 
 
     return configuration_parser

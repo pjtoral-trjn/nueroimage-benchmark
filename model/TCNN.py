@@ -10,8 +10,9 @@ class TCNN(tf.keras.Model):
         return inputs
 
 
-    def __init__(self, parser):
+    def __init__(self, args):
         super().__init__()
+        self.args = args
         images = tf.keras.Input((96, 96, 96, 1))
         self.cb_1 = self.convolution_block(images, 32, "conv_block1")
         self.cb_2 = self.convolution_block(self.cb_1, 64, "conv_block2")
@@ -24,7 +25,7 @@ class TCNN(tf.keras.Model):
         self.relu = tf.nn.relu(self.inst_norm, name="post_relu")
         self.avg_pool = tf.keras.layers.AveragePooling3D(pool_size=(2, 3, 2), strides=2, name="post_avg_pool")(self.relu)
 
-        self.dropout_lyr = tf.keras.layers.Dropout(rate=self.drop_out, name="drop")(self.avg_pool)
+        self.dropout_lyr = tf.keras.layers.Dropout(rate=self.args.drop_out, name="drop")(self.avg_pool)
 
         self.cnv_2 = tf.keras.layers.Conv3D(64, 1, strides=1, name="reg_conv")(self.dropout_lyr)
         self.flatten_lyr = tf.keras.layers.Flatten(name="flatten")(self.cnv_2)
