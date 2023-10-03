@@ -55,8 +55,6 @@ class Pipeline:
             self.set_callbacks()
             self.set_metrics()
 
-        self.model.summary()
-
     def set_optimizer(self):
         self.optimizer = tfa.optimizers.AdamW(learning_rate=self.args.init_learning_rate,
                                               weight_decay=self.args.weight_decay)
