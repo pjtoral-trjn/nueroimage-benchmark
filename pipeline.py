@@ -6,6 +6,7 @@ import os
 import pandas as pd
 from tensorflow.keras.utils import get_custom_objects
 from model.TCNN import TCNN
+from model.ViT.vision_transformer import VisionTransformer
 from data.Data import Data
 
 
@@ -47,8 +48,12 @@ class Pipeline:
         print("Test:", str(len(self.test_batch)))
 
     def configure_model(self):
-        selection = self.args.model_architecture
-        self.model = TCNN(self.args).get_model()
+        selection = str(self.args.model_architecture)
+        if selection.lower() is "tcnn":
+            self.model = TCNN(self.args).get_model()
+        elif selection.lower() is "vit":
+            self.model = VisionTransformer()
+
         if self.model is not None:
             self.set_optimizer()
             self.set_loss_fn()
