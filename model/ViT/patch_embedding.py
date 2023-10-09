@@ -39,7 +39,8 @@ class PatchEmbedding(Layer):
         )
 
     def call(self, x, training=False):
-        tf.print('Features shape -->', tf.shape(x), '\n')
+        tf.print('\n Input shape -->', tf.shape(x), '\n')
         x = self.projection(x)
+        tf.print('After Convolution -->', tf.shape(x), '\n')
         x = tf.reshape(x,[x.shape[0],self.n_patches, self.embed_dimension]) # (n_samples, n_patches, embed_dimensions)
         return x
