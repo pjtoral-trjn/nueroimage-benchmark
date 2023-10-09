@@ -48,13 +48,10 @@ class Pipeline:
         print("Test:", str(len(self.test_batch)))
 
     def configure_model(self):
-        print("Before selection")
         selection = str(self.args.model_architecture)
-        print(selection)
         if selection == "tcnn":
             self.model = TCNN(self.args).get_model()
         elif selection == "vit":
-            print("Setting model")
             train_mean = np.mean(self.data.train_df[self.args.target_column])
             train_std = np.std(self.data.train_df[self.args.target_column])
             self.model = VisionTransformer(self.args.batch_size, train_mean, train_std)
