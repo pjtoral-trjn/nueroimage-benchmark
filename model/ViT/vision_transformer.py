@@ -19,7 +19,7 @@ def VisionTransformer(args, train_mean, train_std, image_size=96, patch_size=16,
         blocks.add(Block())
 
     images = tf.keras.layers.Input(shape=(96, 96, 96, 1), batch_size=input_batch_size)
-    x = PatchEmbedding()(images)
+    x = patch_embedding(images)
 
     x = tf.concat([regression_token, x], axis=1)
     x = x + positional_embedding
