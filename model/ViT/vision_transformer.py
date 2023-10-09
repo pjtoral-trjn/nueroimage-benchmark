@@ -17,7 +17,6 @@ def VisionTransformer(input_batch_size, train_mean, train_std, image_size=96, pa
     blocks = Sequential()
     for _ in range(depth):
         blocks.add(Block())
-    #         n_samples = x.shape[0]
     images = tf.keras.layers.Input(shape=(96, 96, 96, 1), batch_size=input_batch_size)
 
     x = PatchEmbedding()(images)

@@ -30,7 +30,7 @@ class MLP(Layer):
         self.fc_2 = Dense(out_features)
         self.drop = Dropout(dropout_probability)
 
-    def call(self, x, training=False):
+    def call(self, x):
         x = self.fc_1(x)
         x = self.act(x)
         x = self.drop(x)

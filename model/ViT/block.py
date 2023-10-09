@@ -33,7 +33,7 @@ class Block(Layer):
         hidden_features = (embed_dimension * mlp_ratio)
         self.mlp = MLP(input_features=embed_dimension, hidden_features=hidden_features, out_features=embed_dimension)
 
-    def call(self, x, training=False):
+    def call(self, x):
         x = x + self.attn(self.norm_1(x))
         x = x + self.mlp(self.norm_2(x))
         return x

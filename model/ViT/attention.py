@@ -40,7 +40,7 @@ class Attention(Layer):
         self.out_dropout = Dropout(out_drop)
         self.scale = self.head_dim ** -0.5
 
-    def call(self, x, training=False):
+    def call(self, x):
         n_samples, n_tokens, dimension = x.shape
         qkv = self.qkv(x)
         qkv = tf.reshape(qkv, [n_samples, n_tokens, 3, self.n_heads, self.head_dim])
