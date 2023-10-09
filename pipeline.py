@@ -46,6 +46,12 @@ class Pipeline:
         print("Train:", str(len(self.train_batch)))
         print("Validation:", str(len(self.validation_batch)))
         print("Test:", str(len(self.test_batch)))
+        print("----- 5 -----")
+        print(tf.shape(self.train_batch.__getitem__(1135)))
+        print("----- 6 -----")
+        print(tf.shape(self.train_batch.__getitem__(1136)))
+        print("----- 7 -----")
+        print(tf.shape(self.train_batch.__getitem__(1137)))
 
     def configure_model(self):
         selection = str(self.args.model_architecture)
