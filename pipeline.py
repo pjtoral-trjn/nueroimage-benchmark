@@ -51,9 +51,9 @@ class Pipeline:
         print("Before selection")
         selection = str(self.args.model_architecture)
         print(selection)
-        if selection is "tcnn":
+        if selection == "tcnn":
             self.model = TCNN(self.args).get_model()
-        elif selection is "vit":
+        elif selection == "vit":
             print("Setting model")
             self.model = VisionTransformer()
 
