@@ -54,7 +54,7 @@ class Pipeline:
         elif selection == "vit":
             train_mean = np.mean(self.data.train_df[self.args.target_column])
             train_std = np.std(self.data.train_df[self.args.target_column])
-            self.model = VisionTransformer(self.args.batch_size, train_mean, train_std)
+            self.model = VisionTransformer(self.args, train_mean, train_std)
 
         if self.model is not None:
             self.set_optimizer()

@@ -1,24 +1,24 @@
 import tensorflow as tf
-from tensorflow import Variable, Module
+from tensorflow import Variable
 from tensorflow.keras import Sequential, Model
 from tensorflow.keras.layers import Conv3D, Flatten, Dense, Dropout, Permute, LayerNormalization, Layer
-from tensorflow.keras.activations import softmax, gelu
 from model.ViT.patch_embedding import PatchEmbedding
 from model.ViT.block import Block
 
-def VisionTransformer(input_batch_size, train_mean, train_std, image_size=96, patch_size=16, input_channels=1,
+def VisionTransformer(args, train_mean, train_std, image_size=96, patch_size=16, input_channels=1,
                          n_classes=1, embed_dimension=768, depth=12, n_heads=12, mlp_ratio=4.0,
                          qkv_bias=True, dropout_1=0, dropout_2=0.):
-    patch_embedding = PatchEmbedding()
+    input_batch_size = args.batch_size
+    patch_embedding = PatchEmbedding(args)
     embed_dimension = embed_dimension
     regression_token = Variable(tf.zeros([input_batch_size, 1, embed_dimension]))
     positional_embedding = Variable(tf.zeros([1, 1 + patch_embedding.n_patches, embed_dimension]))
-    positional_dropout = Dropout(dropout_1)
+    # positional_dropout = Dropout(dropout_1)
     blocks = Sequential()
     for _ in range(depth):
         blocks.add(Block())
-    images = tf.keras.layers.Input(shape=(96, 96, 96, 1), batch_size=input_batch_size)
 
+    images = tf.keras.layers.Input(shape=(96, 96, 96, 1), batch_size=input_batch_size)
     x = PatchEmbedding()(images)
 
     x = tf.concat([regression_token, x], axis=1)

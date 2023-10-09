@@ -22,8 +22,9 @@ class PatchEmbedding(Layer):
     n_patches: int ; number of patches inside our image
     projection: tf.keras.layers.Conv3d; convolution layer that splits into patches and includes embedding
     """
-    def __init__(self, input_size=(96, 96, 96), patch_size=16, input_channels=1, embed_dimension=768):
+    def __init__(self, args, input_size=(96, 96, 96), patch_size=16, input_channels=1, embed_dimension=768):
         super(PatchEmbedding, self).__init__()
+        self.args = args
         self.input_size = input_size
         self.in_w, self.in_h, self.in_d = self.input_size
         self.patch_size = patch_size
@@ -33,9 +34,9 @@ class PatchEmbedding(Layer):
 
         self.projection = Conv3D(
             embed_dimension,
-            patch_size,
-            strides=patch_size,
-            input_shape=(self.in_w, self.in_h, self.in_d, 1)
+            (patch_size,patch_size,patch_size),
+            strides=(patch_size,patch_size,patch_size),
+            input_shape=(self.args.batch_size, self.in_w, self.in_h, self.in_d, 1)
         )
 
     def call(self, x):
