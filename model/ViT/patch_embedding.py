@@ -39,6 +39,7 @@ class PatchEmbedding(Layer):
         )
 
     def call(self, x, training=False):
+        print(x.shape)
         x = self.projection(x)
         x = tf.reshape(x,[x.shape[0],self.n_patches, self.embed_dimension]) # (n_samples, n_patches, embed_dimensions)
         return x
