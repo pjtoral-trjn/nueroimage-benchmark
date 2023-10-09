@@ -48,10 +48,12 @@ class Pipeline:
         print("Test:", str(len(self.test_batch)))
 
     def configure_model(self):
+        print("Before selection")
         selection = str(self.args.model_architecture)
         if selection.lower() is "tcnn":
             self.model = TCNN(self.args).get_model()
         elif selection.lower() is "vit":
+            print("Setting model")
             self.model = VisionTransformer()
 
         if self.model is not None:
