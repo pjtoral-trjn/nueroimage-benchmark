@@ -3,8 +3,9 @@ from tensorflow import Variable, Module
 from tensorflow.keras import Sequential, Model
 from tensorflow.keras.layers import Conv3D, Flatten, Dense, Dropout, Permute, LayerNormalization, Layer
 from tensorflow.keras.activations import softmax, gelu
-from mlp import MLP
-from attention import Attention
+from model.ViT.mlp import MLP
+from model.ViT.attention import Attention
+
 class Block(Layer):
     """
     Transformer Block

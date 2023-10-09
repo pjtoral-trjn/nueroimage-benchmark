@@ -3,8 +3,9 @@ from tensorflow import Variable, Module
 from tensorflow.keras import Sequential, Model
 from tensorflow.keras.layers import Conv3D, Flatten, Dense, Dropout, Permute, LayerNormalization, Layer
 from tensorflow.keras.activations import softmax, gelu
-from patch_embedding import PatchEmbedding
-from block import Block
+from model.ViT.patch_embedding import PatchEmbedding
+from model.ViT.block import Block
+
 def VisionTransformer(input_batch_size, train_mean, train_std, image_size=96, patch_size=16, input_channels=1,
                          n_classes=1, embed_dimension=768, depth=12, n_heads=12, mlp_ratio=4.0,
                          qkv_bias=True, dropout_1=0, dropout_2=0.):
