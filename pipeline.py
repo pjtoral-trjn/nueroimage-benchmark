@@ -47,11 +47,14 @@ class Pipeline:
         print("Validation:", str(len(self.validation_batch)))
         print("Test:", str(len(self.test_batch)))
         print("----- 5 -----")
-        print(self.train_batch.__getitem__(1135))
+        x_5,y_5 = self.train_batch.__getitem__(1135)
+        x_6, y_6 = self.train_batch.__getitem__(1136)
+        x_7, y_7 = self.train_batch.__getitem__(1137)
+        print(x_5.shape)
         print("----- 6 -----")
-        print(self.train_batch.__getitem__(1136))
+        print(x_6.shape)
         print("----- 7 -----")
-        print(self.train_batch.__getitem__(1137))
+        print(x_7.shape)
 
     def configure_model(self):
         selection = str(self.args.model_architecture)
