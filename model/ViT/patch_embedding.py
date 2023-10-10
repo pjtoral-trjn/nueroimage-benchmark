@@ -34,8 +34,8 @@ class PatchEmbedding(Layer):
 
         self.projection = Conv3D(
             embed_dimension,
-            (patch_size,patch_size,patch_size),
-            strides=(patch_size,patch_size,patch_size),
+            (patch_size, patch_size, patch_size),
+            strides=(patch_size, patch_size, patch_size),
             input_shape=(self.args.batch_size, self.in_w, self.in_h, self.in_d, 1)
         )
 
@@ -44,7 +44,7 @@ class PatchEmbedding(Layer):
         x = self.projection(x)
         tf.print('After Convolution -->', tf.shape(x), '\n')
         tf.print('x.shape[0] -->', str(x.shape[0]), '\n')
-        tf.print('self.embed_dimension -->', str(self.embed_dimension), '\n')
         tf.print('self.n_patches -->', str(self.n_patches), '\n')
+        tf.print('self.embed_dimension -->', str(self.embed_dimension), '\n')
         x = tf.reshape(x, [x.shape[0], self.n_patches, self.embed_dimension]) # (n_samples, n_patches, embed_dimensions)
         return x
