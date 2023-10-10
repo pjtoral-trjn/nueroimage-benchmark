@@ -4,6 +4,7 @@ from tensorflow.keras import Sequential, Model
 from tensorflow.keras.layers import Conv3D, Flatten, Dense, Dropout, Permute, LayerNormalization, Layer
 from tensorflow.keras.activations import softmax, gelu
 
+
 class PatchEmbedding(Layer):
     """
     - Split input image into patches
@@ -22,6 +23,7 @@ class PatchEmbedding(Layer):
     n_patches: int ; number of patches inside our image
     projection: tf.keras.layers.Conv3d; convolution layer that splits into patches and includes embedding
     """
+
     def __init__(self, args, input_size=(96, 96, 96), patch_size=16, input_channels=1, embed_dimension=768):
         super(PatchEmbedding, self).__init__()
         self.args = args
@@ -31,7 +33,7 @@ class PatchEmbedding(Layer):
         self.input_channels = input_channels
         self.embed_dimension = embed_dimension
         self.n_patches = (self.in_w // patch_size) ** 3
-
+        print("BATCH SIZE: ", str(self.args.batch_size))
         self.projection = Conv3D(
             embed_dimension,
             (patch_size, patch_size, patch_size),
@@ -46,5 +48,5 @@ class PatchEmbedding(Layer):
         tf.print('x.shape[0] -->', str(x.shape[0]), '\n')
         tf.print('self.n_patches -->', str(self.n_patches), '\n')
         tf.print('self.embed_dimension -->', str(self.embed_dimension), '\n')
-        x = tf.reshape(x, [x.shape[0], self.n_patches, self.embed_dimension]) # (n_samples, n_patches, embed_dimensions)
+        x = tf.reshape(x, [x.shape[0], self.n_patches, self.embed_dimension]) #(n_samples, n_patches, embed_dimensions)
         return x
