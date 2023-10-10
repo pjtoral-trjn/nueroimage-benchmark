@@ -33,7 +33,6 @@ class PatchEmbedding(Layer):
         self.input_channels = input_channels
         self.embed_dimension = embed_dimension
         self.n_patches = (self.in_w // patch_size) ** 3
-        print("BATCH SIZE: ", str(self.args.batch_size))
         self.projection = Conv3D(
             embed_dimension,
             (patch_size, patch_size, patch_size),
@@ -42,11 +41,6 @@ class PatchEmbedding(Layer):
         )
 
     def call(self, x):
-        tf.print('\n Input shape -->', tf.shape(x), '\n')
         x = self.projection(x)
-        tf.print('After Convolution -->', tf.shape(x), '\n')
-        tf.print('x.shape[0] -->', str(x.shape[0]), '\n')
-        tf.print('self.n_patches -->', str(self.n_patches), '\n')
-        tf.print('self.embed_dimension -->', str(self.embed_dimension), '\n')
         x = tf.reshape(x, [x.shape[0], self.n_patches, self.embed_dimension]) #(n_samples, n_patches, embed_dimensions)
         return x
