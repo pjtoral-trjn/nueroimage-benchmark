@@ -5,7 +5,7 @@ class TCNN:
         self.args = args
 
     def get_model(self):
-        # Tamgohna
+        # Tamgohna model
         def convolution_block(inputs, num_filter, name):
             inputs = tf.keras.layers.Conv3D(num_filter, 3, strides=1, padding="same")(inputs)
             inputs = tfa.layers.InstanceNormalization(center=False, scale=False)(inputs, training=True)
