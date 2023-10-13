@@ -132,7 +132,7 @@ class Pipeline:
         # evaluation
         evaluation = self.model.evaluate(self.test_batch)
         model_predictions = [p[0] for p in self.model.predict(self.test_batch)]
-        true_labels = self.data.train_df[self.args.target_column].to_numpy()
+        true_labels = self.data.test_df[self.args.target_column].to_numpy()
 
         save_pathway = "./saves/" + self.args.experiment_name
         print(save_pathway)
