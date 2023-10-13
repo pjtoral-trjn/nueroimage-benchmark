@@ -11,11 +11,10 @@ def VisionTransformer(args, train_mean, train_std, image_size=96, patch_size=16,
     input_batch_size = args.batch_size
     patch_embedding = PatchEmbedding(args)
     embed_dimension = embed_dimension
-    regression_token = Variable(tf.zeros([input_batch_size, 1, embed_dimension]))
-    positional_embedding = Variable(tf.zeros([1, 1 + patch_embedding.n_patches, embed_dimension]))
-    # positional_dropout = Dropout(dropout_1)
-    attn_blocks = Sequential()
+    regression_token = tf.zeros([input_batch_size, 1, embed_dimension])
+    positional_embedding = tf.zeros([1, 1 + patch_embedding.n_patches, embed_dimension])
 
+    attn_blocks = Sequential()
     for _ in range(depth):
         attn_blocks.add(Block())
 

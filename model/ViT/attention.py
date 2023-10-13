@@ -3,6 +3,8 @@ from tensorflow import Variable, Module
 from tensorflow.keras import Sequential, Model
 from tensorflow.keras.layers import Conv3D, Flatten, Dense, Dropout, Permute, LayerNormalization, Layer
 from tensorflow.keras.activations import softmax, gelu
+
+
 class Attention(Layer):
     """
     Attension Mechanism
@@ -61,5 +63,8 @@ class Attention(Layer):
         x = self.out_dropout(x)
         return x
 
-
-
+    def get_config(self):
+        return {"dimension": self.dimension, "n_heads": self.n_heads, "head_dim": self.head_dim,
+                "qkv_bias": self.qkv_bias, "attn_drop": self.attn_drop, "out_drop": self.out_drop, "qkv": self.qkv,
+                "projection": self.projection, "attn_dropout": self.attn_dropout,
+                "out_dropout": self.out_dropout, "scale": self.scale}

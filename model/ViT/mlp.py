@@ -4,6 +4,7 @@ from tensorflow.keras import Sequential, Model
 from tensorflow.keras.layers import Conv3D, Flatten, Dense, Dropout, Permute, LayerNormalization, Layer
 from tensorflow.keras.activations import softmax, gelu
 
+
 class MLP(Layer):
     """
     Multi Layer Perceptron
@@ -37,3 +38,6 @@ class MLP(Layer):
         x = self.fc_2(x)
         x = self.drop(x)
         return x
+
+    def get_config(self):
+        return {"fc_1": self.fc_1, "act": self.act, "fc_2": self.fc_2, "drop": self.drop}
