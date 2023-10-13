@@ -8,6 +8,7 @@ from tensorflow.keras.utils import get_custom_objects
 from model.TCNN import TCNN
 from model.ViT.vision_transformer import VisionTransformer
 from data.Data import Data
+import os
 
 
 class Pipeline:
@@ -134,8 +135,9 @@ class Pipeline:
         model_predictions = [p[0] for p in self.model.predict(self.test_batch)]
         true_labels = self.data.test_df[self.args.target_column].to_numpy()
 
-        save_pathway = "./saves/" + self.args.experiment_name
-        print(save_pathway)
+        if not os.path.exists("./output/"+self.output_filename):
+            os.makedirs("./output/"+self.output_filename)
+        save_pathway = "./output/"+self.output_filename+"/save/"
         self.model.save(save_pathway)
         history = pd.DataFrame(self.history.history)
         predictions = pd.DataFrame(data={"predictions": model_predictions, "true_labels": true_labels})
