@@ -20,7 +20,7 @@ class RESNET3D:
             return inputs
 
     images = tf.keras.Input((96, 96, 96, 1))
-    input_skip = input
+    input_skip = images
 
     ## First layer
     inputs = convolution_block(images, 32, "resnet_conv_block1")
