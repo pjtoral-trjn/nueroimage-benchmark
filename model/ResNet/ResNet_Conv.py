@@ -47,7 +47,7 @@ class RESNET3D:
     inputs = tf.nn.relu(inputs)
 
     # Prcoessing Residue
-    input_skip_block = convolution_block(input_skip_block, 256, "input_skip_block2")
+    input_skip_block = convolution_block(input_skip_block, 128, "input_skip_block2")
     input_skip_block = tf.nn.relu(input_skip_block)
 
     # Add Residue
