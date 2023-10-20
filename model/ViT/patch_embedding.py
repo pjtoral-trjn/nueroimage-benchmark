@@ -44,3 +44,9 @@ class PatchEmbedding(Layer):
         x = self.projection(x)
         x = tf.reshape(x, [x.shape[0], self.n_patches, self.embed_dimension]) #(n_samples, n_patches, embed_dimensions)
         return x
+
+    def get_config(self):
+        return {"input_size": self.input_size, "in_w": self.in_w, "in_h": self.in_h,
+                "in_d": self.in_d, "patch_size": self.patch_size, "input_channels": self.input_channels,
+                "embed_dimension": self.embed_dimension,
+                "projection": self.projection}

@@ -37,3 +37,6 @@ class Block(Layer):
         x = x + self.attn(self.norm_1(x))
         x = x + self.mlp(self.norm_2(x))
         return x
+
+    def get_config(self):
+        return {"norm_1": self.norm_1, "norm_2": self.norm_2, "attn": self.attn, "mlp": self.mlp}

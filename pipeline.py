@@ -9,6 +9,7 @@ from model.TCNN import TCNN
 from model.ViT.vision_transformer import VisionTransformer
 from model.ResNet.ResNet_Conv import RESNET3D
 from data.Data import Data
+import os
 
 
 class Pipeline:
@@ -53,7 +54,7 @@ class Pipeline:
         train_mean = np.mean(self.data.train_df[self.args.target_column])
         train_std = np.std(self.data.train_df[self.args.target_column])
         if selection == "tcnn":
-            self.model = TCNN(self.args).get_model()
+            self.model = TCNN(self.args, train_mean, train_std).get_model()
         elif selection == "vit":
             self.model = VisionTransformer(self.args, train_mean, train_std)
         elif selection == "resnet":
@@ -135,10 +136,11 @@ class Pipeline:
         # evaluation
         evaluation = self.model.evaluate(self.test_batch)
         model_predictions = [p[0] for p in self.model.predict(self.test_batch)]
-        true_labels = self.data.train_df[self.args.target_column].to_numpy()
+        true_labels = self.data.test_df[self.args.target_column].to_numpy()
 
-        save_pathway = "./saves/" + self.args.experiment_name
-        print(save_pathway)
+        if not os.path.exists("./output/"+self.output_filename):
+            os.makedirs("./output/"+self.output_filename)
+        save_pathway = "./output/"+self.output_filename+"/save/"
         self.model.save(save_pathway)
         history = pd.DataFrame(self.history.history)
         predictions = pd.DataFrame(data={"predictions": model_predictions, "true_labels": true_labels})

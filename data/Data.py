@@ -38,8 +38,8 @@ class Data:
         df_test_ADNI1 = pd.read_csv(self.pathway + "/test_ADNI1_" + self.dof + ".csv")
         df_test_ADNI2 = pd.read_csv(self.pathway + "/test_ADNI2_" + self.dof + ".csv")
         df_test_ADNI3 = pd.read_csv(self.pathway + "/test_ADNI3_" + self.dof + ".csv")
-        df_train = pd.concat([df_train_ADNI1, df_train_ADNI2, df_train_ADNI3], ignore_index=True).reset_index(drop=True)
-        df_test = pd.concat([df_test_ADNI1, df_test_ADNI2, df_test_ADNI3], ignore_index=True).reset_index(drop=True)
+        df_train = pd.concat([df_train_ADNI3,df_train_ADNI2, df_train_ADNI1], ignore_index=True).reset_index(drop=True)
+        df_test = pd.concat([df_test_ADNI3, df_test_ADNI2, df_test_ADNI1], ignore_index=True).reset_index(drop=True)
 
         # df_train = pd.read_csv(self.train_pathway)
         # df_test = pd.read_csv(self.test_pathway)
