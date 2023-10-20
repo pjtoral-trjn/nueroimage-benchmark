@@ -7,7 +7,7 @@ import pandas as pd
 from tensorflow.keras.utils import get_custom_objects
 from model.TCNN import TCNN
 from model.ViT.vision_transformer import VisionTransformer
-from model.ResNet.ReNet_Conv import RESNET3D
+from model.ResNet.ResNet_Conv import RESNET3D
 from data.Data import Data
 
 
@@ -57,7 +57,7 @@ class Pipeline:
         elif selection == "vit":
             self.model = VisionTransformer(self.args, train_mean, train_std)
         elif selection == "resnet":
-            self.model = ReNet_Conv(self.args, train_mean, train_std).get_model()
+            self.model = RESNET3D(self.args, train_mean, train_std).get_model()
 
         if self.model is not None:
             self.set_optimizer()
