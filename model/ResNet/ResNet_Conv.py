@@ -3,8 +3,11 @@ import tensorflow as tf
 import tensorflow_addons as tfa
 
 class RESNET3D:
-  def __init__(self, args):
+  def __init__(self, args, train_mean, train_std):
     self.args = args
+    self.train_mean = train_mean
+    self.train_std = train_std
+
 
   def get_model(self):
 
@@ -62,10 +65,10 @@ class RESNET3D:
     outputs = tf.keras.layers.Flatten(name="flatten")(outputs)
 
     outputs = tf.keras.layers.Dense(units=1, name="Cognitive-Assessment-3DRSN",
-                                        # bias_initializer=tf.keras.initializers.RandomNormal(
-                                        #     mean=np.mean(self.data.train_df[self.target_column]),
-                                        #     stddev=np.std(self.data.train_df[self.target_column]),
-                                        #     seed=self.seed_num)
+                                        bias_initializer=tf.keras.initializers.RandomNormal(
+                                            mean=self.train_mean,
+                                            stddev=self.train_std,
+                                            seed=5)
                                         # activation="sigmoid"
                                         )(outputs)
 

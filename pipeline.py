@@ -7,6 +7,7 @@ import pandas as pd
 from tensorflow.keras.utils import get_custom_objects
 from model.TCNN import TCNN
 from model.ViT.vision_transformer import VisionTransformer
+from model.ReNet import ReNet_Conv
 from data.Data import Data
 
 
@@ -49,12 +50,14 @@ class Pipeline:
 
     def configure_model(self):
         selection = str(self.args.model_architecture)
+        train_mean = np.mean(self.data.train_df[self.args.target_column])
+        train_std = np.std(self.data.train_df[self.args.target_column])
         if selection == "tcnn":
             self.model = TCNN(self.args).get_model()
         elif selection == "vit":
-            train_mean = np.mean(self.data.train_df[self.args.target_column])
-            train_std = np.std(self.data.train_df[self.args.target_column])
             self.model = VisionTransformer(self.args, train_mean, train_std)
+        elif selection == "resnet":
+            self.model = ReNet_Conv(self.args, train_mean, train_std).get_model()
 
         if self.model is not None:
             self.set_optimizer()
