@@ -130,7 +130,7 @@ class Pipeline:
         # loading the best weights from training
         self.model.load_weights(self.best_weights_checkpoint_filepath)
 
-        # evaluation
+        # evaluation of test
         evaluation = self.model.evaluate(self.test_batch)
         model_predictions = [p[0] for p in self.model.predict(self.test_batch)]
         true_labels = self.data.test_df[self.args.target_column].to_numpy()
