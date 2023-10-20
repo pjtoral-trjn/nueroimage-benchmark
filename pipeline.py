@@ -7,7 +7,7 @@ import pandas as pd
 from tensorflow.keras.utils import get_custom_objects
 from model.TCNN import TCNN
 from model.ViT.vision_transformer import VisionTransformer
-from model.ReNet import ReNet_Conv
+from model.ResNet.ReNet_Conv import RESNET3D
 from data.Data import Data
 
 
