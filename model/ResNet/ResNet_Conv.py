@@ -38,16 +38,12 @@ class RESNET3D:
     inputs = tf.keras.layers.Add()([inputs, input_skip_block])
     inputs = tf.nn.relu(inputs)
 
-    ## Third layer
-    inputs = convolution_block(inputs, 128, "resnet_conv_block3")
-    inputs = tf.nn.relu(inputs)
+    # ## Third layer
+    # inputs = convolution_block(inputs, 128, "resnet_conv_block3")
+    # inputs = tf.nn.relu(inputs)
 
     ## Fourth Layer
     inputs = convolution_block(inputs, 256, "resnet_conv_block4")
-    inputs = tf.nn.relu(inputs)
-
-    ## Fifth Layer
-    inputs = convolution_block(inputs, 256, "resnet_conv_block5")
     inputs = tf.nn.relu(inputs)
 
     # Prcoessing Residue
