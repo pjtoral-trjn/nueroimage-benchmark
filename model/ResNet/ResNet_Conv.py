@@ -31,25 +31,27 @@ class RESNET3D:
     inputs = tf.nn.relu(inputs)
 
     # Prcoessing Residue
-    input_skip = tf.keras.layers.Conv3D(64,1,strides=1,name="residual_conv1")(input_skip)
+    input_skip_block = convolution_block(input_skip, 64, "input_skip_block")
+    input_skip_block = tf.nn.relu(input_skip_block)
 
     # Add Residue
-    inputs = tf.keras.layers.Add()([inputs, input_skip])
+    inputs = tf.keras.layers.Add()([inputs, input_skip_block])
     inputs = tf.nn.relu(inputs)
 
     ## Third layer
-    inputs = convolution_block(images, 128, "resnet_conv_block3")
+    inputs = convolution_block(inputs, 128, "resnet_conv_block3")
     inputs = tf.nn.relu(inputs)
 
     ## Fourth Layer
-    inputs = convolution_block(images, 256, "resnet_conv_block4")
+    inputs = convolution_block(inputs, 256, "resnet_conv_block4")
     inputs = tf.nn.relu(inputs)
 
     # Prcoessing Residue
-    input_skip = tf.keras.layers.Conv3D(256,1,strides=1,name="residual_conv2")(input_skip)
+    input_skip_block = convolution_block(input_skip_block, 256, "input_skip_block2")
+    input_skip_block = tf.nn.relu(input_skip_block)
 
     # Add Residue
-    inputs = tf.keras.layers.Add()([inputs, input_skip])
+    inputs = tf.keras.layers.Add()([inputs, input_skip_block])
     inputs = tf.nn.relu(inputs)
 
 
