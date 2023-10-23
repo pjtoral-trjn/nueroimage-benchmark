@@ -32,11 +32,10 @@ class Pipeline:
                                                 + self.creation_time_for_csv_output + '/checkpoint'
         self.task = "classification" if self.args.loss is "bce" else "regression"
 
-        if not os.path.exists("./output/"+self.output_filename):
-            os.makedirs("./output/"+self.output_filename)
-        vars_dict = vars(self.args)
-        config_df = pd.DataFrame(data=vars_dict)
-        config_df.to_csv("./output/"+self.output_filename+"/config.csv", index=False)
+
+        # vars_dict = vars(self.args)
+        # config_df = pd.DataFrame(data=vars_dict)
+        # config_df.to_csv("./output/"+self.output_filename+"/config.csv", index=False)
 
     def configure_gpu(self):
         os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
@@ -144,6 +143,8 @@ class Pipeline:
         model_predictions = [p[0] for p in self.model.predict(self.test_batch)]
         true_labels = self.data.test_df[self.args.target_column].to_numpy()
 
+        if not os.path.exists("./output/"+self.output_filename):
+            os.makedirs("./output/"+self.output_filename)
 
         save_pathway = "./output/"+self.output_filename+"/save/"
         self.model.save(save_pathway)
