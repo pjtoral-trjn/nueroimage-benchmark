@@ -145,7 +145,6 @@ class Pipeline:
 
         if not os.path.exists("./output/"+self.output_filename):
             os.makedirs("./output/"+self.output_filename)
-
         save_pathway = "./output/"+self.output_filename+"/save/"
         self.model.save(save_pathway)
         history = pd.DataFrame(self.history.history)
