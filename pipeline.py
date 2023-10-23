@@ -96,7 +96,7 @@ class Pipeline:
             save_weights_only=True,
             monitor='val_loss',
             mode='min',
-            save_best_only=False)
+            save_best_only=True)
 
         self.callbacks = [early_stopping_cb, checkpoint_cb]
 
