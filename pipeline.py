@@ -34,7 +34,7 @@ class Pipeline:
 
         if not os.path.exists("./output/"+self.output_filename):
             os.makedirs("./output/"+self.output_filename)
-        config_df = pd.DataFrame(self.args)
+        config_df = pd.DataFrame(eval(self.args))
         config_df.to_csv("./output/"+self.output_filename+"/config.csv", index=False)
 
     def configure_gpu(self):
