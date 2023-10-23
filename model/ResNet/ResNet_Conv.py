@@ -19,7 +19,7 @@ class RESNET3D:
 
             return inputs
 
-    images = tf.keras.Input((91, 109, 91, 1))
+    images = tf.keras.Input((96, 96, 96, 1))
     input_skip = images
 
     ## First layer
