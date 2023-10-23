@@ -93,8 +93,9 @@ class Data:
             scan = nib.load(path)
             original_volume = scan.get_fdata()
             original_volume_normalized = self.normalize(original_volume)
-            resized_volume = self.resize(original_volume_normalized)
-            return tf.expand_dims(resized_volume, axis=3)
+            print()
+            # resized_volume = self.resize(original_volume_normalized)
+            return tf.expand_dims(original_volume_normalized, axis=3)
 
         def normalize(self, volume):
             min = np.amax(volume)

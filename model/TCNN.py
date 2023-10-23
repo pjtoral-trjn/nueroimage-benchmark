@@ -16,7 +16,7 @@ class TCNN:
 
             return inputs
 
-        images = tf.keras.Input((96, 96, 96, 1))
+        images = tf.keras.Input((91, 109, 91, 1))
         inputs = convolution_block(images, 32, "conv_block1")
         inputs = convolution_block(inputs, 64, "conv_block2")
         inputs = convolution_block(inputs, 128, "conv_block3")
