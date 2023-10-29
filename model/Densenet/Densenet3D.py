@@ -741,7 +741,7 @@ def __create_dense_net(nb_classes, img_input, include_top, depth=40, nb_dense_bl
         x = BatchNormalization(axis=concat_axis, epsilon=1.1e-5, name='final_bn')(x)
         x = Activation('relu')(x)
 
-        if class:
+        if include_top:
             if pooling == 'avg':
                 x = GlobalAveragePooling3D()(x)
             elif pooling == 'max':
