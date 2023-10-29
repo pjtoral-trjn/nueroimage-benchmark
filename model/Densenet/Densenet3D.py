@@ -30,6 +30,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import tensorflow as tf
 import tensorflow.keras.backend as K
 from tensorflow.keras.utils import get_source_inputs
 from tensorflow.keras.layers import Activation
@@ -52,7 +53,7 @@ from tensorflow.keras.regularizers import l2
 # from keras_contrib.layers import SubPixelUpscaling
 
 
-def DenseNet3D(args, train_mean, train_std, classification_transfer_learning=False,
+def DenseNet3D(args, train_mean, train_std,
                input_shape=None,
                depth=40,
                nb_dense_block=3,
@@ -152,7 +153,7 @@ def DenseNet3D(args, train_mean, train_std, classification_transfer_learning=Fal
             img_input = Input(tensor=input_tensor, shape=input_shape)
         else:
             img_input = input_tensor
-    x = __create_dense_net(classes, img_input, include_top, depth, nb_dense_block,
+    x = __create_dense_net(train_mean, train_std,classes, img_input, include_top, depth, nb_dense_block,
                            growth_rate, nb_filter, nb_layers_per_block, bottleneck,
                            reduction, dropout_rate, weight_decay,
                            subsample_initial_block, pooling, activation,
@@ -165,6 +166,7 @@ def DenseNet3D(args, train_mean, train_std, classification_transfer_learning=Fal
     else:
         inputs = img_input
     # Create model.
+
     model = Model(inputs, x, name='densenet')
 
     return model
@@ -309,82 +311,6 @@ def DenseNet3DImageNet121(input_shape=None,
                           activation='softmax'):
     return DenseNet3D(input_shape, depth=121, nb_dense_block=4, growth_rate=32,
                       nb_filter=64, nb_layers_per_block=[6, 12, 24, 16],
-                      bottleneck=bottleneck, reduction=reduction,
-                      dropout_rate=dropout_rate, weight_decay=weight_decay,
-                      subsample_initial_block=True, include_top=include_top,
-                      input_tensor=input_tensor,
-                      pooling=pooling, classes=classes, activation=activation)
-
-
-def DenseNet3DImageNet169(input_shape=None,
-                          bottleneck=True,
-                          reduction=0.5,
-                          dropout_rate=0.0,
-                          weight_decay=1e-4,
-                          include_top=True,
-                          input_tensor=None,
-                          pooling=None,
-                          classes=1000,
-                          activation='softmax'):
-    return DenseNet3D(input_shape, depth=169, nb_dense_block=4, growth_rate=32,
-                      nb_filter=64, nb_layers_per_block=[6, 12, 32, 32],
-                      bottleneck=bottleneck, reduction=reduction,
-                      dropout_rate=dropout_rate, weight_decay=weight_decay,
-                      subsample_initial_block=True, include_top=include_top,
-                      input_tensor=input_tensor,
-                      pooling=pooling, classes=classes, activation=activation)
-
-
-def DenseNet3DImageNet201(input_shape=None,
-                          bottleneck=True,
-                          reduction=0.5,
-                          dropout_rate=0.0,
-                          weight_decay=1e-4,
-                          include_top=True,
-                          input_tensor=None,
-                          pooling=None,
-                          classes=1000,
-                          activation='softmax'):
-    return DenseNet3D(input_shape, depth=201, nb_dense_block=4, growth_rate=32,
-                      nb_filter=64, nb_layers_per_block=[6, 12, 48, 32],
-                      bottleneck=bottleneck, reduction=reduction,
-                      dropout_rate=dropout_rate, weight_decay=weight_decay,
-                      subsample_initial_block=True, include_top=include_top,
-                      input_tensor=input_tensor,
-                      pooling=pooling, classes=classes, activation=activation)
-
-
-def DenseNet3DImageNet264(input_shape=None,
-                          bottleneck=True,
-                          reduction=0.5,
-                          dropout_rate=0.0,
-                          weight_decay=1e-4,
-                          include_top=True,
-                          input_tensor=None,
-                          pooling=None,
-                          classes=1000,
-                          activation='softmax'):
-    return DenseNet3D(input_shape, depth=264, nb_dense_block=4, growth_rate=32,
-                      nb_filter=64, nb_layers_per_block=[6, 12, 64, 48],
-                      bottleneck=bottleneck, reduction=reduction,
-                      dropout_rate=dropout_rate, weight_decay=weight_decay,
-                      subsample_initial_block=True, include_top=include_top,
-                      input_tensor=input_tensor,
-                      pooling=pooling, classes=classes, activation=activation)
-
-
-def DenseNetImageNet161(input_shape=None,
-                        bottleneck=True,
-                        reduction=0.5,
-                        dropout_rate=0.0,
-                        weight_decay=1e-4,
-                        include_top=True,
-                        input_tensor=None,
-                        pooling=None,
-                        classes=1000,
-                        activation='softmax'):
-    return DenseNet3D(input_shape, depth=161, nb_dense_block=4, growth_rate=48,
-                      nb_filter=96, nb_layers_per_block=[6, 12, 36, 24],
                       bottleneck=bottleneck, reduction=reduction,
                       dropout_rate=dropout_rate, weight_decay=weight_decay,
                       subsample_initial_block=True, include_top=include_top,
@@ -605,7 +531,7 @@ def __transition_up_block(ip, nb_filters, type='deconv', weight_decay=1E-4,
         return x
 
 
-def __create_dense_net(nb_classes, img_input, include_top, depth=40, nb_dense_block=3,
+def __create_dense_net(train_mean, train_std, nb_classes, img_input, include_top, depth=40, nb_dense_block=3,
                        growth_rate=12, nb_filter=-1, nb_layers_per_block=-1,
                        bottleneck=False, reduction=0.0, dropout_rate=None,
                        weight_decay=1e-4, subsample_initial_block=False, pooling=None,
@@ -752,6 +678,12 @@ def __create_dense_net(nb_classes, img_input, include_top, depth=40, nb_dense_bl
                 x = GlobalAveragePooling3D()(x)
             elif pooling == 'max':
                 x = GlobalMaxPooling3D()(x)
+            x = tf.keras.layers.Dense(units=1, name="Cognitive-Assessment-Densenet",
+                                            bias_initializer=tf.keras.initializers.RandomNormal(
+                                                mean=train_mean,
+                                                stddev=train_std,
+                                                seed=5)
+                                            )(x)
 
         return x
 
@@ -935,12 +867,12 @@ def __create_fcn_dense_net(nb_classes, img_input, include_top, nb_dense_block=5,
             x = x_up
 
         return x
-
-
-if __name__ == '__main__':
-    model_fcn = DenseNet3D_FCN((64, 64, 64, 1), nb_dense_block=5, growth_rate=16,
-                               nb_layers_per_block=4, upsampling_type='upsampling', classes=1, activation='sigmoid')
-    model_fcn.summary()
-
-    model = DenseNet3DImageNet121((32, 32, 32, 1))
-    model.summary()
+#
+#
+# if __name__ == '__main__':
+#     model_fcn = DenseNet3D_FCN((64, 64, 64, 1), nb_dense_block=5, growth_rate=16,
+#                                nb_layers_per_block=4, upsampling_type='upsampling', classes=1, activation='sigmoid')
+#     model_fcn.summary()
+#
+#     model = DenseNet3DImageNet121((32, 32, 32, 1))
+#     model.summary()
