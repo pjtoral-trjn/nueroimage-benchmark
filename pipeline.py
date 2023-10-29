@@ -9,6 +9,7 @@ from model.TCNN import TCNN
 from model.ViT.vision_transformer import VisionTransformer
 from model.ResNet.ResNet_Conv import RESNET3D
 from model.VGG.VGG16 import VGG16_3D
+from model.Densenet.Densenet3D import DenseNet3D
 from data.Data import Data
 import os
 
@@ -59,14 +60,46 @@ class Pipeline:
         selection = str(self.args.model_architecture)
         train_mean = np.mean(self.data.train_df[self.args.target_column])
         train_std = np.std(self.data.train_df[self.args.target_column])
+        classification_transfer_learning = True if self.task == "classfication" else False
         if selection == "tcnn":
-            self.model = TCNN(self.args, train_mean, train_std).get_model()
+            self.model = TCNN(self.args, train_mean, train_std).get_model(classification_transfer_learning)
         elif selection == "vit":
             self.model = VisionTransformer(self.args, train_mean, train_std)
         elif selection == "resnet":
-            self.model = RESNET3D(self.args, train_mean, train_std).get_model()
+            self.model = RESNET3D(self.args, train_mean, train_std).get_model(classification_transfer_learning)
         elif selection == "vgg16":
             self.model = VGG16_3D(self.args, train_mean, train_std).get_model()
+        elif selection == "densnet":
+            images = tf.keras.Input((96, 96, 96, 1))
+            if classification_transfer_learning:
+                self.model = DenseNet3D(self.args, train_mean, train_std, depth=121, nb_dense_block=4, growth_rate=32,
+                                    nb_filter=64, nb_layers_per_block=[6, 12, 24, 16],
+                                    bottleneck=False, reduction=0.0,
+                                    dropout_rate=0.0, weight_decay=1e-4,
+                                    subsample_initial_block=True, include_top=True,
+                                    input_tensor=images,
+                                    pooling="max", classes=1, activation='sigmoid')
+            else:
+                densnet121 = DenseNet3D(self.args, train_mean, train_std, depth=121, nb_dense_block=4,
+                                                     growth_rate=32,
+                                                     nb_filter=64, nb_layers_per_block=[6, 12, 24, 16],
+                                                     bottleneck=False, reduction=0.0,
+                                                     dropout_rate=0.0, weight_decay=1e-4,
+                                                     subsample_initial_block=True, include_top=False,
+                                                     input_tensor=images,
+                                                     pooling="max", classes=1)
+                x = tf.convert_to_tensor(densnet121.outputs)
+                outputs = tf.keras.layers.Dense(units=1, name="Cognitive-Assessment-Densenet",
+                                                bias_initializer=tf.keras.initializers.RandomNormal(
+                                                    mean=train_mean,
+                                                    stddev=train_std,
+                                                    seed=5)
+                                                # activation="sigmoid"
+                                                )(x)
+                self.model = tf.keras.Model(images, outputs, name="3DRSN")
+
+
+
 
         if self.model is not None:
             self.set_optimizer()
@@ -105,7 +138,7 @@ class Pipeline:
             monitor='val_loss',
             mode='min',
             save_best_only=True,
-            __verbose__=1)
+            verbose=1)
 
         self.callbacks = [early_stopping_cb, checkpoint_cb]
 

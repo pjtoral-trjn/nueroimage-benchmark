@@ -9,7 +9,7 @@ class RESNET3D:
     self.train_std = train_std
 
 
-  def get_model(self):
+  def get_model(self, classification_transfer_learning=False):
 
     def convolution_block(inputs, num_filter, name):
             inputs = tf.keras.layers.Conv3D(num_filter, 3, strides=1, padding="same")(inputs)
@@ -66,13 +66,17 @@ class RESNET3D:
     outputs = tf.keras.layers.Conv3D(64, 1, strides=1, name="reg_conv")(inputs)
     outputs = tf.keras.layers.Flatten(name="flatten")(outputs)
 
-    outputs = tf.keras.layers.Dense(units=1, name="Cognitive-Assessment-3DRSN",
-                                        bias_initializer=tf.keras.initializers.RandomNormal(
-                                            mean=self.train_mean,
-                                            stddev=self.train_std,
-                                            seed=5)
-                                        # activation="sigmoid"
-                                        )(outputs)
+    if not classification_transfer_learning:
+        outputs = tf.keras.layers.Dense(units=1, name="Cognitive-Assessment-3DRSN",
+                                            bias_initializer=tf.keras.initializers.RandomNormal(
+                                                mean=self.train_mean,
+                                                stddev=self.train_std,
+                                                seed=5)
+                                            # activation="sigmoid"
+                                            )(outputs)
+    elif classification_transfer_learning:
+        outputs = tf.keras.layers.Dense(units=1, name="Classification-3DRSN",
+                                                seed=5, activation="sigmoid")(outputs)
 
     # Define the model
     return tf.keras.Model(images, outputs, name="3DRSN")
