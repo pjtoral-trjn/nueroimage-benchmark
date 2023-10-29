@@ -80,7 +80,7 @@ class Pipeline:
                                     input_tensor=images,
                                     pooling="max", classes=1, activation='sigmoid')
             else:
-                densnet121 = DenseNet3D(self.args, train_mean, train_std, depth=121, nb_dense_block=4,
+                densenet121 = DenseNet3D(self.args, train_mean, train_std, depth=121, nb_dense_block=4,
                                                      growth_rate=32,
                                                      nb_filter=64, nb_layers_per_block=[6, 12, 24, 16],
                                                      bottleneck=False, reduction=0.0,
@@ -88,14 +88,13 @@ class Pipeline:
                                                      subsample_initial_block=True, include_top=False,
                                                      input_tensor=images,
                                                      pooling="max", classes=1)
-                x = tf.convert_to_tensor(densnet121.outputs)
                 outputs = tf.keras.layers.Dense(units=1, name="Cognitive-Assessment-Densenet",
                                                 bias_initializer=tf.keras.initializers.RandomNormal(
                                                     mean=train_mean,
                                                     stddev=train_std,
                                                     seed=5)
                                                 # activation="sigmoid"
-                                                )(x)
+                                                )(densenet121.outputs)
                 self.model = tf.keras.Model(images, outputs, name="3DRSN")
 
 
