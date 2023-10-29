@@ -69,7 +69,7 @@ class Pipeline:
             self.model = RESNET3D(self.args, train_mean, train_std).get_model(classification_transfer_learning)
         elif selection == "vgg16":
             self.model = VGG16_3D(self.args, train_mean, train_std).get_model()
-        elif selection == "densnet":
+        elif selection == "densenet":
             images = tf.keras.Input((96, 96, 96, 1))
             if classification_transfer_learning:
                 self.model = DenseNet3D(self.args, train_mean, train_std, depth=121, nb_dense_block=4, growth_rate=32,
