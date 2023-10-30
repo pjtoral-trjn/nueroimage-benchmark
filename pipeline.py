@@ -101,7 +101,7 @@ class Pipeline:
     def set_loss_fn(self):
         if self.args.loss == "mse":
             self.loss_fn = tf.keras.losses.MeanSquaredError(
-                reduction=tf.keras.losses.Reduction.NONE,
+                reduction=tf.keras.losses.Reduction.AUTO,
                 name='mean_squared_error'
             )
         # if self.loss == "bmse":
