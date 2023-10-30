@@ -76,7 +76,7 @@ class Pipeline:
                                     nb_filter=64, nb_layers_per_block=[6, 12, 24, 16],
                                     bottleneck=False, reduction=0.0,
                                     dropout_rate=0.0, weight_decay=1e-4,
-                                    subsample_initial_block=False, include_top=True,
+                                    subsample_initial_block=True, include_top=True,
                                     input_tensor=images,
                                     pooling="max", classes=1, activation='sigmoid')
             else:
@@ -85,11 +85,11 @@ class Pipeline:
                                                      nb_filter=64, nb_layers_per_block=[6, 12, 24, 16],
                                                      bottleneck=False, reduction=0.0,
                                                      dropout_rate=0.0, weight_decay=1e-4,
-                                                     subsample_initial_block=False, include_top=False,
+                                                     subsample_initial_block=True, include_top=False,
                                                      input_tensor=images, pooling="max")
 
-
-
+        train_x,train_y = self.data.train_batch.__getitem__(0)
+        print(self.model(train_x))
 
         if self.model is not None:
             self.set_optimizer()
