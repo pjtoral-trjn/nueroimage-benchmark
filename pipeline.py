@@ -72,7 +72,7 @@ class Pipeline:
         elif selection == "densenet":
             images = tf.keras.Input((96, 96, 96, 1))
             train_x, train_y = self.data.train_batch.__getitem__(0)
-
+            print(tf.shape(train_x))
             if classification_transfer_learning:
                 self.model = DenseNet3D(self.args, train_mean, train_std, depth=121, nb_dense_block=4, growth_rate=32,
                                     nb_filter=64, nb_layers_per_block=[6, 12, 24, 16],
@@ -90,7 +90,7 @@ class Pipeline:
                                                      subsample_initial_block=True, include_top=False,
                                                      input_shape=tf.shape(train_x), pooling="max")
 
-        print(tf.shape(train_x))
+
         print(self.model(train_x))
 
         if self.model is not None:
