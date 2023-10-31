@@ -34,7 +34,6 @@ class Pipeline:
                                                 + self.creation_time_for_csv_output + '/checkpoint'
         self.task = "classification" if self.args.loss == "bce" else "regression"
 
-
         # vars_dict = vars(self.args)
         # config_df = pd.DataFrame(data=vars_dict)
         # config_df.to_csv("./output/"+self.output_filename+"/config.csv", index=False)
@@ -72,20 +71,20 @@ class Pipeline:
         elif selection == "densenet":
             if classification_transfer_learning:
                 self.model = DenseNet3D(self.args, train_mean, train_std, depth=121, nb_dense_block=4, growth_rate=32,
-                                    nb_filter=64, nb_layers_per_block=[6, 12, 24, 16],
-                                    bottleneck=False, reduction=0.0,
-                                    dropout_rate=0.0, weight_decay=1e-4,
-                                    subsample_initial_block=True, include_top=True,
-                                    input_shape=(96, 96, 96, 1),
-                                    pooling="max", classes=1, activation='sigmoid')
+                                        nb_filter=64, nb_layers_per_block=[6, 12, 24, 16],
+                                        bottleneck=False, reduction=0.0,
+                                        dropout_rate=0.0, weight_decay=1e-4,
+                                        subsample_initial_block=True, include_top=True,
+                                        input_shape=(96, 96, 96, 1),
+                                        pooling="max", classes=1, activation='sigmoid')
             else:
                 self.model = DenseNet3D(self.args, train_mean, train_std, depth=121, nb_dense_block=4,
-                                                     growth_rate=32,
-                                                     nb_filter=64, nb_layers_per_block=[6, 12, 24, 16],
-                                                     bottleneck=False, reduction=0.0,
-                                                     dropout_rate=0.0, weight_decay=1e-4,
-                                                     subsample_initial_block=True, include_top=False,
-                                                     input_shape=(96, 96, 96, 1), pooling="max")
+                                        growth_rate=32,
+                                        nb_filter=64, nb_layers_per_block=[6, 12, 24, 16],
+                                        bottleneck=False, reduction=0.0,
+                                        dropout_rate=0.0, weight_decay=1e-4,
+                                        subsample_initial_block=True, include_top=False,
+                                        input_shape=(96, 96, 96, 1), pooling="max")
 
         if self.model is not None:
             self.set_optimizer()
@@ -94,8 +93,12 @@ class Pipeline:
             self.set_metrics()
 
     def set_optimizer(self):
-        self.optimizer = tfa.optimizers.AdamW(learning_rate=self.args.init_learning_rate,
-                                              weight_decay=self.args.weight_decay)
+        if self.args.optimizer == "adamw":
+            self.optimizer = tfa.optimizers.AdamW(learning_rate=self.args.init_learning_rate,
+                                                  weight_decay=self.args.weight_decay)
+        elif self.args.optimizer == "sgd":
+            self.optimizer = tf.keras.optimizers.experimental.SGD(learning_rate=self.args.init_learning_rate,
+                                                                  weight_decay=self.args.weight_decay)
 
     def set_loss_fn(self):
         if self.args.loss == "mse":
@@ -122,6 +125,7 @@ class Pipeline:
             mode = "max"
         else:
             mode = "min"
+
         checkpoint_cb = tf.keras.callbacks.ModelCheckpoint(
             filepath=self.best_weights_checkpoint_filepath,
             save_weights_only=True,
@@ -171,9 +175,9 @@ class Pipeline:
         model_predictions = [p[0] for p in self.model.predict(self.test_batch)]
         true_labels = self.data.test_df[self.args.target_column].to_numpy()
 
-        if not os.path.exists("./output/"+self.output_filename):
-            os.makedirs("./output/"+self.output_filename)
-        save_pathway = "./output/"+self.output_filename+"/save/"
+        if not os.path.exists("./output/" + self.output_filename):
+            os.makedirs("./output/" + self.output_filename)
+        save_pathway = "./output/" + self.output_filename + "/save/"
         self.model.save(save_pathway)
         history = pd.DataFrame(self.history.history)
         predictions = pd.DataFrame(data={"predictions": model_predictions, "true_labels": true_labels})

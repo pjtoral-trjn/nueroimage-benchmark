@@ -525,15 +525,15 @@ def __create_dense_net(train_mean, train_std, nb_classes, img_input, include_top
                 x = GlobalAveragePooling3D()(x)
             elif pooling == 'max':
                 x = GlobalMaxPooling3D()(x)
-            x = tf.keras.layers.Flatten(name="flatten")(x)
-            x = Dense(nb_classes, activation="sigmoid")(x)
+            # x = tf.keras.layers.Flatten(name="flatten")(x)
+            x = Dense(nb_classes, name="Classification-Densenet", activation="sigmoid")(x)
         else:
             if pooling == 'avg':
                 x = GlobalAveragePooling3D()(x)
             elif pooling == 'max':
                 x = GlobalMaxPooling3D()(x)
 
-            x = tf.keras.layers.Flatten(name="flatten")(x)
+            # x = tf.keras.layers.Flatten(name="flatten")(x)
             x = tf.keras.layers.Dense(units=1, name="Cognitive-Assessment-Densenet",
                                             # bias_initializer=tf.keras.initializers.RandomNormal(
                                             #     mean=train_mean,
@@ -543,13 +543,3 @@ def __create_dense_net(train_mean, train_std, nb_classes, img_input, include_top
                                             )(x)
 
         return x
-
-#
-#
-# if __name__ == '__main__':
-#     model_fcn = DenseNet3D_FCN((64, 64, 64, 1), nb_dense_block=5, growth_rate=16,
-#                                nb_layers_per_block=4, upsampling_type='upsampling', classes=1, activation='sigmoid')
-#     model_fcn.summary()
-#
-#     model = DenseNet3DImageNet121((32, 32, 32, 1))
-#     model.summary()
