@@ -66,7 +66,7 @@ class Pipeline:
             self.model = VisionTransformer(self.args, train_mean, train_std)
         elif selection == "resnet":
             self.model = RESNET3D(self.args, train_mean, train_std).get_model(classification_transfer_learning)
-        elif selection == "vgg16":
+        elif selection == "vgg":
             self.model = TinyVGG(self.args, train_mean, train_std).get_model(classification_transfer_learning)
         elif selection == "densenet":
             if classification_transfer_learning:
