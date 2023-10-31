@@ -8,7 +8,7 @@ from tensorflow.keras.utils import get_custom_objects
 from model.TCNN import TCNN
 from model.ViT.vision_transformer import VisionTransformer
 from model.ResNet.ResNet_Conv import RESNET3D
-from model.VGG.VGG16 import VGG16_3D
+from model.VGG.tiny_vgg import TinyVGG
 from model.Densenet.Densenet3D import DenseNet3D
 from data.Data import Data
 import os
@@ -67,7 +67,7 @@ class Pipeline:
         elif selection == "resnet":
             self.model = RESNET3D(self.args, train_mean, train_std).get_model(classification_transfer_learning)
         elif selection == "vgg16":
-            self.model = VGG16_3D(self.args, train_mean, train_std).get_model()
+            self.model = TinyVGG(self.args, train_mean, train_std).get_model(classification_transfer_learning)
         elif selection == "densenet":
             if classification_transfer_learning:
                 self.model = DenseNet3D(self.args, train_mean, train_std, depth=121, nb_dense_block=4, growth_rate=32,
