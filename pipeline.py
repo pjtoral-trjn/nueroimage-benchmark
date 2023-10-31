@@ -99,7 +99,7 @@ class Pipeline:
                                               weight_decay=self.args.weight_decay)
 
     def set_loss_fn(self):
-        if self.args.loss == "mse":
+        if self.args.loss is "mse":
             self.loss_fn = tf.keras.losses.MeanSquaredError(
                 reduction=tf.keras.losses.Reduction.AUTO,
                 name='mean_squared_error'
@@ -110,7 +110,7 @@ class Pipeline:
         #     self.optimizer.add_slot(bmse.noise_sigma, "noise_sigma")
         #     self.loss_fn = bmse
 
-        if self.args.loss == "bce":
+        if self.args.loss is "bce":
             self.loss_fn = tf.keras.losses.BinaryCrossentropy(
                 from_logits=False,
             )
@@ -130,10 +130,10 @@ class Pipeline:
         self.callbacks = [early_stopping_cb, checkpoint_cb]
 
     def set_metrics(self):
-        if self.task == "classification":
+        if self.task is "classification":
             self.metrics = [tf.keras.metrics.AUC(), tf.keras.metrics.Precision(), tf.keras.metrics.Recall(),
                             tf.keras.metrics.Accuracy()]
-        if self.task == "regression":
+        if self.task is "regression":
             self.metrics = ["mse", "mae"]
 
     def compile(self):
