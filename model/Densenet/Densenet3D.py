@@ -535,11 +535,11 @@ def __create_dense_net(train_mean, train_std, nb_classes, img_input, include_top
 
             # x = tf.keras.layers.Flatten(name="flatten")(x)
             x = tf.keras.layers.Dense(units=1, name="Cognitive-Assessment-Densenet",
-                                            # bias_initializer=tf.keras.initializers.RandomNormal(
-                                            #     mean=train_mean,
-                                            #     stddev=train_std,
-                                            #     seed=5
-                                            # )
+                                            bias_initializer=tf.keras.initializers.RandomNormal(
+                                                mean=train_mean,
+                                                stddev=train_std,
+                                                seed=5
+                                            )
                                             )(x)
 
         return x
