@@ -75,8 +75,7 @@ class RESNET3D:
                                             # activation="sigmoid"
                                             )(outputs)
     elif classification_transfer_learning:
-        outputs = tf.keras.layers.Dense(units=1, name="Classification-3DRSN",
-                                                seed=5, activation="sigmoid")(outputs)
+        outputs = tf.keras.layers.Dense(units=1, name="Classification-3DRSN",seed=5, activation="sigmoid")(outputs)
 
     # Define the model
     return tf.keras.Model(images, outputs, name="3DRSN")
