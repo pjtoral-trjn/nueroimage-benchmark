@@ -60,7 +60,6 @@ class Pipeline:
         selection = str(self.args.model_architecture)
         train_mean = np.mean(self.data.train_df[self.args.target_column])
         train_std = np.std(self.data.train_df[self.args.target_column])
-        train_x, train_y = self.data.train_batch.__getitem__(0)
         classification_transfer_learning = True if self.task == "classfication" else False
         if selection == "tcnn":
             self.model = TCNN(self.args, train_mean, train_std).get_model(classification_transfer_learning)
@@ -112,21 +111,25 @@ class Pipeline:
 
         if self.args.loss == "bce":
             self.loss_fn = tf.keras.losses.BinaryCrossentropy(
-                from_logits=True,
+                from_logits=False,
                 reduction=tf.keras.losses.Reduction.AUTO,
             )
 
     def set_callbacks(self):
         early_stopping_cb = tf.keras.callbacks.EarlyStopping(monitor="loss", patience=self.args.early_stop, verbose=1,
                                                              restore_best_weights=True)
-
+        if self.task == "classification":
+            mode = "max"
+        else:
+            mode = "min"
         checkpoint_cb = tf.keras.callbacks.ModelCheckpoint(
             filepath=self.best_weights_checkpoint_filepath,
             save_weights_only=True,
             monitor='val_loss',
-            mode='min',
+            mode=mode,
             save_best_only=True,
-            verbose=1)
+            verbose=1
+        )
 
         self.callbacks = [early_stopping_cb, checkpoint_cb]
 
