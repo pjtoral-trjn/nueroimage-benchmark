@@ -97,7 +97,7 @@ class Pipeline:
             self.optimizer = tfa.optimizers.AdamW(learning_rate=self.args.init_learning_rate,
                                                   weight_decay=self.args.weight_decay)
         elif self.args.optimizer == "sgd":
-            self.optimizer = tf.keras.optimizers.experimental.SGD(learning_rate=self.args.init_learning_rate,
+            self.optimizer = tf.keras.optimizers.SGD(learning_rate=self.args.init_learning_rate,
                                                                   weight_decay=self.args.weight_decay)
 
     def set_loss_fn(self):
