@@ -138,8 +138,9 @@ class Pipeline:
 
     def set_metrics(self):
         if self.task == "classification":
-            self.metrics = [tf.keras.metrics.AUC(), tf.keras.metrics.Precision(), tf.keras.metrics.Recall(),
-                            tf.keras.metrics.Accuracy()]
+            # self.metrics = [tf.keras.metrics.AUC(), tf.keras.metrics.Precision(), tf.keras.metrics.Recall(),
+            #                 tf.keras.metrics.Accuracy()]
+            self.metrics = [tf.keras.metrics.AUC()]
         if self.task == "regression":
             self.metrics = ["mse", "mae"]
 

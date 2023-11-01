@@ -48,7 +48,6 @@ class TinyVGG:
                                             # activation="sigmoid"
                                             )(outputs)
     elif classification_transfer_learning:
-        outputs = tf.keras.layers.Dense(units=512, name="Final Relu", activation="relu")(outputs)
         outputs = tf.keras.layers.Dense(units=1, name="Classification-Tiny-VGG", activation="sigmoid")(outputs)
 
     # Define the model
