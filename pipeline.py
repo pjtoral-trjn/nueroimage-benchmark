@@ -34,10 +34,11 @@ class Pipeline:
                                                 + self.creation_time_for_csv_output + '/checkpoint'
         self.task = "classification" if self.args.loss == "bce" else "regression"
 
-        # vars_dict = vars(self.args)
-        # config_df = pd.DataFrame(data=vars_dict)
-        # config_df.to_csv("./output/"+self.output_filename+"/config.csv", index=False)
-
+        if not os.path.exists("./output/test"):
+            os.makedirs("./output/test")
+        vars_dict = vars(self.args)
+        config_df = pd.DataFrame(list(vars_dict.items()), columns=['Argument', 'Value'])
+        config_df.to_csv("./output/test/config.csv", index=False)
     def configure_gpu(self):
         os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
         os.environ["CUDA_VISIBLE_DEVICES"] = str(self.args.gpu)
