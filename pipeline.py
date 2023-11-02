@@ -120,10 +120,7 @@ class Pipeline:
     def set_callbacks(self):
         early_stopping_cb = tf.keras.callbacks.EarlyStopping(monitor="loss", patience=self.args.early_stop, verbose=1,
                                                              restore_best_weights=True)
-        if self.task == "classification":
-            mode = "max"
-        else:
-            mode = "min"
+        mode = "min"
 
         checkpoint_cb = tf.keras.callbacks.ModelCheckpoint(
             filepath=self.best_weights_checkpoint_filepath,
@@ -138,9 +135,9 @@ class Pipeline:
 
     def set_metrics(self):
         if self.task == "classification":
-            # self.metrics = [tf.keras.metrics.AUC(), tf.keras.metrics.Precision(), tf.keras.metrics.Recall(),
-            #                 tf.keras.metrics.Accuracy()]
-            self.metrics = [tf.keras.metrics.AUC()]
+            self.metrics = [tf.keras.metrics.AUC(), tf.keras.metrics.Precision(), tf.keras.metrics.Recall(),
+                            tf.keras.metrics.Accuracy()]
+            # self.metrics = [tf.keras.metrics.AUC()]
         if self.task == "regression":
             self.metrics = ["mse", "mae"]
 
