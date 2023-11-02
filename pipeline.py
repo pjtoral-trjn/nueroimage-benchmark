@@ -59,7 +59,7 @@ class Pipeline:
         selection = str(self.args.model_architecture)
         train_mean = np.mean(self.data.train_df[self.args.target_column])
         train_std = np.std(self.data.train_df[self.args.target_column])
-        classification_transfer_learning = True if self.task == "classfication" else False
+        classification_transfer_learning = True if self.task == "classification" else False
         if selection == "tcnn":
             self.model = TCNN(self.args, train_mean, train_std).get_model(classification_transfer_learning)
         elif selection == "vit":
