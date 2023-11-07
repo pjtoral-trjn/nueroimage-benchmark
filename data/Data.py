@@ -32,17 +32,23 @@ class Data:
         self.set_data_generators()
 
     def set_dataframes(self):
-        df_train_ADNI1 = pd.read_csv(self.pathway + "/train_ADNI1_" + self.dof + ".csv")
-        df_train_ADNI2 = pd.read_csv(self.pathway + "/train_ADNI2_" + self.dof + ".csv")
-        df_train_ADNI3 = pd.read_csv(self.pathway + "/train_ADNI3_" + self.dof + ".csv")
-        df_test_ADNI1 = pd.read_csv(self.pathway + "/test_ADNI1_" + self.dof + ".csv")
-        df_test_ADNI2 = pd.read_csv(self.pathway + "/test_ADNI2_" + self.dof + ".csv")
-        df_test_ADNI3 = pd.read_csv(self.pathway + "/test_ADNI3_" + self.dof + ".csv")
-        df_train = pd.concat([df_train_ADNI3,df_train_ADNI2, df_train_ADNI1], ignore_index=True).reset_index(drop=True)
-        df_test = pd.concat([df_test_ADNI3, df_test_ADNI2, df_test_ADNI1], ignore_index=True).reset_index(drop=True)
-
-        # df_train = pd.read_csv(self.train_pathway)
-        # df_test = pd.read_csv(self.test_pathway)
+        print(self.train_pathway)
+        if self.train_pathway == "" and self.test_pathway == "":
+            print("USING ADNI")
+            df_train_ADNI1 = pd.read_csv(self.pathway + "/train_ADNI1_" + self.dof + ".csv")
+            df_train_ADNI2 = pd.read_csv(self.pathway + "/train_ADNI2_" + self.dof + ".csv")
+            df_train_ADNI3 = pd.read_csv(self.pathway + "/train_ADNI3_" + self.dof + ".csv")
+            df_test_ADNI1 = pd.read_csv(self.pathway + "/test_ADNI1_" + self.dof + ".csv")
+            df_test_ADNI2 = pd.read_csv(self.pathway + "/test_ADNI2_" + self.dof + ".csv")
+            df_test_ADNI3 = pd.read_csv(self.pathway + "/test_ADNI3_" + self.dof + ".csv")
+            df_train = pd.concat([df_train_ADNI3,df_train_ADNI2, df_train_ADNI1], ignore_index=True).reset_index(drop=True)
+            df_test = pd.concat([df_test_ADNI3, df_test_ADNI2, df_test_ADNI1], ignore_index=True).reset_index(drop=True)
+        else:
+            print("USING the following pathways")
+            print(self.train_pathway)
+            print(self.test_pathway)
+            df_train = pd.read_csv(self.train_pathway)
+            df_test = pd.read_csv(self.test_pathway)
 
         df_train.dropna(subset=[self.target_column], inplace=True)
         df_test.dropna(subset=[self.target_column], inplace=True)
@@ -53,7 +59,9 @@ class Data:
         df_train.reset_index(inplace=True)
         df_validation = pd.DataFrame()
         # ADNI
-        df_train["subj_id"] = ["_".join(x.split("/")[-1].split("_")[:3]) for x in df_train['volume']]
+        if 'subj_id' not in df_train.columns:
+            df_train["subj_id"] = ["_".join(x.split("/")[-1].split("_")[:3]) for x in df_train['volume']]
+
         sgkf = StratifiedGroupKFold(n_splits=2, shuffle=True, random_state=7)
         (train_idxs, validation_idxs) = next(
             sgkf.split(df_train.drop(columns=["label"]), df_train["label"], groups=df_train["subj_id"]))
