@@ -22,8 +22,8 @@ def config_parser():
     configuration_parser.add_argument("-ma", "--model_architecture", type=str, help="Model Architecture Selection")
     configuration_parser.add_argument("-l", "--loss", type=str, help="Model Loss")
     configuration_parser.add_argument("-en", "--experiment_name", type=str, help="Experiment Name, for storage")
-    configuration_parser.add_argument("-trp", "--train_pathway", type=str, help="Train Pathway CSV")
-    configuration_parser.add_argument("-tep", "--test_pathway", type=str, help="Test Pathway CSV")
+    configuration_parser.add_argument("-trp", "--train_pathway", default="", type=str, help="Train Pathway CSV")
+    configuration_parser.add_argument("-tep", "--test_pathway", default="", type=str, help="Test Pathway CSV")
     configuration_parser.add_argument("-ilr", "--init_learning_rate", type=float,
                                       help="Initial Learning Rate for the optimizer")
     configuration_parser.add_argument("-wd", "--weight_decay", type=float, help="Weight Decay for ADAMW optimizer")
