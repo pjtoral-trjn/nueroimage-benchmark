@@ -48,7 +48,7 @@ class TinyVGG:
                                             # activation="sigmoid"
                                             )(outputs)
     elif classification_transfer_learning:
-        outputs = tf.keras.layers.Dense(units=1, name="Classification-Tiny-VGG")(outputs)
+        outputs = tf.keras.layers.Dense(units=1, name="Classification-Tiny-VGG", activation="sigmoid")(outputs)
 
     # Define the model
     return tf.keras.Model(images, outputs, name="3D-Tiny-VGG")
