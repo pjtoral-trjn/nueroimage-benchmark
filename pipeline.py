@@ -109,7 +109,7 @@ class Pipeline:
 
         if self.args.loss == "bce":
             self.loss_fn = tf.keras.losses.BinaryCrossentropy(
-                from_logits=False,
+                from_logits=True,
                 reduction=tf.keras.losses.Reduction.AUTO,
             )
 
