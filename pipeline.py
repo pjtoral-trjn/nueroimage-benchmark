@@ -126,7 +126,7 @@ class Pipeline:
             save_best_only=True,
             verbose=1
         )
-
+        # commiting
         self.callbacks = [early_stopping_cb, checkpoint_cb]
 
     def set_metrics(self):
