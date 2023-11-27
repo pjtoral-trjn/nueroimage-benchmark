@@ -14,7 +14,7 @@ class RESNET3D:
     def convolution_block(inputs, num_filter, name):
             inputs = tf.keras.layers.Conv3D(num_filter, 3, strides=1, padding="same")(inputs)
             inputs = tfa.layers.InstanceNormalization(center=False, scale=False)(inputs, training=True)
-            # inputs = tf.keras.layers.MaxPooling3D(2, strides=2, padding="valid")(inputs)
+            inputs = tf.keras.layers.MaxPooling3D(2, strides=2, padding="valid")(inputs)
             # inputs = tf.nn.relu(inputs)
 
             return inputs
@@ -24,12 +24,10 @@ class RESNET3D:
 
     ## First layer
     inputs = convolution_block(images, 32, "resnet_conv_block1")
-    inputs = tf.keras.layers.MaxPooling3D(2, strides=2, padding="valid")(inputs)
     inputs = tf.nn.relu(inputs)
 
     ## Second Layer
     inputs = convolution_block(inputs, 64, "resnet_conv_block2")
-    inputs = tf.keras.layers.MaxPooling3D(2, strides=2, padding="valid")(inputs)
     inputs = tf.nn.relu(inputs)
 
     # Prcoessing Residue
@@ -42,12 +40,10 @@ class RESNET3D:
 
     # ## Third layer
     inputs = convolution_block(inputs, 128, "resnet_conv_block3")
-    inputs = tf.keras.layers.MaxPooling3D(2, strides=2, padding="valid")(inputs)
     inputs = tf.nn.relu(inputs)
 
     ## Fourth Layer
     inputs = convolution_block(inputs, 256, "resnet_conv_block4")
-    inputs = tf.keras.layers.MaxPooling3D(2, strides=2, padding="valid")(inputs)
     inputs = tf.nn.relu(inputs)
 
     # Prcoessing Residue
