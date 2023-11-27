@@ -27,7 +27,7 @@ class RESNET3D:
     inputs = tf.nn.relu(inputs)
 
     ## Second Layer
-    inputs = convolution_block(images, 64, "resnet_conv_block2")
+    inputs = convolution_block(inputs, 64, "resnet_conv_block2")
     inputs = tf.nn.relu(inputs)
 
     # Prcoessing Residue
