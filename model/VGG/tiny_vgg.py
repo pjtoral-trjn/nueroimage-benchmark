@@ -26,7 +26,7 @@ class TinyVGG:
     inputs = convolution_block(inputs, 32)
     inputs = convolution_block(inputs, 64)
     inputs = convolution_block(inputs, 128)
-    inputs = convolution_block(inputs, 256)
+    # inputs = convolution_block(inputs, 256)
 
 
     # Last Layer
