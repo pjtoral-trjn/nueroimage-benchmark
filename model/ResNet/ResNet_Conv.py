@@ -32,6 +32,7 @@ class RESNET3D:
 
     # Prcoessing Residue
     input_skip_block = convolution_block(input_skip, 64, "input_skip_block")
+    inputs = tf.keras.layers.MaxPooling3D(2, strides=2, padding="valid")(inputs)
     input_skip_block = tf.nn.relu(input_skip_block)
 
     # Add Residue
