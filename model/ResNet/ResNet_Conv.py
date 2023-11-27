@@ -39,8 +39,8 @@ class RESNET3D:
     inputs = tf.nn.relu(inputs)
 
     # ## Third layer
-    # inputs = convolution_block(inputs, 128, "resnet_conv_block3")
-    # inputs = tf.nn.relu(inputs)
+    inputs = convolution_block(inputs, 128, "resnet_conv_block3")
+    inputs = tf.nn.relu(inputs)
 
     ## Fourth Layer
     inputs = convolution_block(inputs, 256, "resnet_conv_block4")
@@ -71,9 +71,7 @@ class RESNET3D:
                                             bias_initializer=tf.keras.initializers.RandomNormal(
                                                 mean=self.train_mean,
                                                 stddev=self.train_std,
-                                                seed=5)
-                                            # activation="sigmoid"
-                                            )(outputs)
+                                                seed=5))(outputs)
     elif classification_transfer_learning:
         outputs = tf.keras.layers.Dense(units=1, name="Classification-3DRSN", activation="sigmoid")(outputs)
 

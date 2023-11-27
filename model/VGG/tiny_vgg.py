@@ -44,9 +44,7 @@ class TinyVGG:
                                             bias_initializer=tf.keras.initializers.RandomNormal(
                                                 mean=self.train_mean,
                                                 stddev=self.train_std,
-                                                seed=5)
-                                            # activation="sigmoid"
-                                            )(outputs)
+                                                seed=5))(outputs)
     elif classification_transfer_learning:
         outputs = tf.keras.layers.Dense(units=1, name="Classification-Tiny-VGG", activation="sigmoid")(outputs)
 
