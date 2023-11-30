@@ -6,7 +6,7 @@ from pipeline import Pipeline
 def config_parser():
     configuration_parser = argparse.ArgumentParser()
     # defaults
-    configuration_parser.add_argument("-tls", "--trainable_layers", type=int, default=1, help="Trainable Layers")
+    configuration_parser.add_argument("-tls", "--trainable_layers", type=float, default=1, help="Trainable Layers")
     configuration_parser.add_argument("-e", "--epochs", type=int, default=50, help="Training Epochs")
     configuration_parser.add_argument("-s", "--seed", type=int, default=5, help="Randomizer Seed")
     configuration_parser.add_argument("-tc", "--target_column", type=str, default="label", help="Target Column")
