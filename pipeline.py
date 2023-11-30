@@ -82,21 +82,26 @@ class Pipeline:
                                         subsample_initial_block=True, include_top=False,
                                         input_shape=(96, 96, 96, 1), pooling="max")
 
+        if self.args.saved_model_pathway != "":
+            self.configure_transfer_learning_model()
+
         if self.model is not None:
             self.set_optimizer()
             self.set_loss_fn()
             self.set_callbacks()
             self.set_metrics()
 
-        if self.args.saved_model_pathway != "":
-            i = 0
-            trainable_layers = round(len(self.model.layers) * self.args.trainable_layers)
-            for layer in self.model.layers:
-                if i < len(self.model.layers) - trainable_layers:
-                    layer.trainable = False
-                elif i >= len(self.model.layers) - trainable_layers:
-                    layer.trainable = True
-                i += 1
+    def configure_transfer_learning_model(self):
+        learned_model = tf.keras.models.load_model(self.args.saved_model_pathway, compile=False)
+        self.model = self.model.set_weights(learned_model.get_weights())
+        i = 0
+        trainable_layers = round(len(self.model.layers) * self.args.trainable_layers)
+        for layer in self.model.layers:
+            if i < len(self.model.layers) - trainable_layers:
+                layer.trainable = False
+            elif i >= len(self.model.layers) - trainable_layers:
+                layer.trainable = True
+            i += 1
 
     def set_optimizer(self):
         if self.args.optimizer == "adamw":
