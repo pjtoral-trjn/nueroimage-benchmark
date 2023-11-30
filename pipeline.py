@@ -88,6 +88,16 @@ class Pipeline:
             self.set_callbacks()
             self.set_metrics()
 
+        if self.args.saved_model_pathway != "":
+            i = 0
+            trainable_layers = round(len(self.model.layers) * self.args.trainable_layers)
+            for layer in self.model.layers:
+                if i < len(self.model.layers) - trainable_layers:
+                    layer.trainable = False
+                elif i >= len(self.model.layers) - trainable_layers:
+                    layer.trainable = True
+                i += 1
+
     def set_optimizer(self):
         if self.args.optimizer == "adamw":
             self.optimizer = tfa.optimizers.AdamW(learning_rate=self.args.init_learning_rate,
@@ -101,12 +111,6 @@ class Pipeline:
                 reduction=tf.keras.losses.Reduction.AUTO,
                 name='mean_squared_error'
             )
-        # if self.loss == "bmse":
-        #     bmse = BalancedMSE(self.init_noise_sigma)
-        #     get_custom_objects().update({"bmse": bmse})
-        #     self.optimizer.add_slot(bmse.noise_sigma, "noise_sigma")
-        #     self.loss_fn = bmse
-
         if self.args.loss == "bce":
             self.loss_fn = tf.keras.losses.BinaryCrossentropy(
                 from_logits=False,
@@ -117,7 +121,6 @@ class Pipeline:
         early_stopping_cb = tf.keras.callbacks.EarlyStopping(monitor="loss", patience=self.args.early_stop, verbose=1,
                                                              restore_best_weights=True)
         mode = "min"
-
         checkpoint_cb = tf.keras.callbacks.ModelCheckpoint(
             filepath=self.best_weights_checkpoint_filepath,
             save_weights_only=True,
@@ -126,14 +129,12 @@ class Pipeline:
             save_best_only=True,
             verbose=1
         )
-        # commiting
         self.callbacks = [early_stopping_cb, checkpoint_cb]
 
     def set_metrics(self):
         if self.task == "classification":
             self.metrics = [tf.keras.metrics.AUC(), tf.keras.metrics.Precision(), tf.keras.metrics.Recall(),
                             tf.keras.metrics.Accuracy()]
-            # self.metrics = [tf.keras.metrics.AUC()]
         if self.task == "regression":
             self.metrics = ["mse", "mae"]
 

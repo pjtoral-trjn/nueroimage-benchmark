@@ -12,8 +12,7 @@ def config_parser():
     configuration_parser.add_argument("-tc", "--target_column", type=str, default="label", help="Target Column")
     configuration_parser.add_argument("-vc", "--volume_column", type=str, default="volume", help="Volume Column")
     configuration_parser.add_argument("-o", "--optimizer", type=str, default="adamw", help="Model Optimizer")
-    configuration_parser.add_argument("-pt", "--pre_train", type=bool, default=False,
-                                      help="Is this experiment pretraining?")
+    configuration_parser.add_argument("-smp", "--saved_model_pathway", type=str, default="", help="Saved Model Pathway")
 
     # necessary configuration
     configuration_parser.add_argument("-g", "--gpu", type=int, help="GPU ID Selection")
