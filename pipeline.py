@@ -93,8 +93,7 @@ class Pipeline:
 
     def configure_transfer_learning_model(self):
         learned_model = tf.keras.models.load_model(self.args.saved_model_pathway, compile=False)
-        print(learned_model.get_weights())
-        self.model = self.model.set_weights(learned_model.get_weights())
+        self.model.set_weights(learned_model.get_weights())
         i = 0
         trainable_layers = round(len(self.model.layers) * self.args.trainable_layers)
         for layer in self.model.layers:
